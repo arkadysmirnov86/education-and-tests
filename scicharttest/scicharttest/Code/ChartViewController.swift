@@ -9,8 +9,6 @@
 import UIKit
 import SciChart
 
-
-
 class ChartViewController: UIViewController {
     
     // TODO: по-хорошему бы реализовать иньекцию данной проперти, но это зависит от того как вообще будут пораждаться ViewController'ы в приложении. Пока просто закрыл протоколом.
@@ -24,22 +22,23 @@ class ChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //TODO: по хорошему бы пересчитать и обработать транзишн, но не в рамках данного задания
-        let frame = self.view.bounds
-        sciChartSurface = SCIChartSurface(frame: frame)
-        sciChartSurface.translatesAutoresizingMaskIntoConstraints = true
-        
-        self.view.addSubview(sciChartSurface!)
-        
-        sciChartSurface.xAxes.add(SCINumericAxis())
-        sciChartSurface.yAxes.add(SCINumericAxis())
-        
+        createSurface()
         createLineDataSeries()
         createLineDataSeries()
         createRenderableSeries()
         createAnotation()
         addModifiers()
         subscribeToGenerator()
+    }
+    
+    private func createSurface() {
+        //TODO: по хорошему бы пересчитать.
+        let frame = self.view.bounds
+        sciChartSurface = SCIChartSurface(frame: frame)
+        sciChartSurface.translatesAutoresizingMaskIntoConstraints = true
+        sciChartSurface.xAxes.add(SCINumericAxis())
+        sciChartSurface.yAxes.add(SCINumericAxis())
+        self.view.addSubview(sciChartSurface!)
     }
     
     private func subscribeToGenerator() {
@@ -49,7 +48,7 @@ class ChartViewController: UIViewController {
             print("x:\(x) y:\(y)")
             self?.lineDataSeries.appendX(SCIGeneric(x), y: SCIGeneric(y))
             self?.sciChartSurface?.zoomExtents()
-            // наверно не самый оптимальный способ отрисовки линии, но не увидел в документации более вменяемого способо из коробки. На форумах встречается решение похожей задачи через кастомизацию SCIFastLineRenderableSeries и переопределение internalDraw, но это не на час задача, как мне кажется.
+            // наверно не самый оптимальный способ отрисовки линии, но не увидел в документации более вменяемого способа сделать это из коробки. На форумах встречается решение похожей задачи через кастомизацию SCIFastLineRenderableSeries и переопределение internalDraw, но это не на час задача, как мне кажется.
             self?.sciChartSurface.annotations.clear()
             self?.lineAnnotationRelative.y1 = SCIGeneric(y)
             self?.sciChartSurface.annotations.add(self?.lineAnnotationRelative);

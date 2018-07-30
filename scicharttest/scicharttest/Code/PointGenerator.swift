@@ -9,6 +9,7 @@
 import Foundation
 
 class PointGenerator: PointGeneratorProtcol {
+    
     private static var timeInterval: TimeInterval = 1
     private weak var timer: Timer?
     private var xAxis: Double
@@ -16,7 +17,7 @@ class PointGenerator: PointGeneratorProtcol {
     
     private var subscriptionHandler: PointGeneratorProtcol.NotificationClosure?
     
-    // не совсем честный сабскипшн, но все же
+    //TODO: не совсем честный сабскипшн, но все же
     func subscribe(updateHandler: @escaping PointGeneratorProtcol.NotificationClosure) {
         subscriptionHandler = updateHandler
     }
@@ -29,7 +30,7 @@ class PointGenerator: PointGeneratorProtcol {
     }
     
     @objc private func timerTick(timer: Timer) {
-        // не переживаем за OutOfRange
+        //TODO: не переживаем за OutOfRange
         self.xAxis += 1
         self.yAxis += (Double(arc4random_uniform(200)) - 100)/100
         self.subscriptionHandler?(self.xAxis, self.yAxis)
