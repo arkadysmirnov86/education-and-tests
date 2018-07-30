@@ -1,0 +1,6 @@
+framework module Pods_scicharttest {
+  umbrella header "Pods-scicharttest-umbrella.h"
+
+  export *
+  module * { export * }
+}
